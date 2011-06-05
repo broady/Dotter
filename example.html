@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta charset="utf-8">
+<title>Dotter example</title>
+<style type="text/css">
+  html, body, #map {
+    width: 100%; height: 100%; margin: 0; padding: 0;
+  }
+</style>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript" src="dotter.js"></script>
+<script type="text/javascript" src="crashes.js"></script>
+<script type="text/javascript">
+  function initialize() {
+    var map = new google.maps.Map(document.getElementById('map'), {
+      center: new google.maps.LatLng(41.852973, -87.630099),
+      zoom: 11,
+      mapTypeControl: false
+    });
+    var styles = [
+      { elementType: 'labels', stylers: [ { visibility: 'off' } ] },
+      { stylers: [ { saturation: -99 }, { lightness: 20 } ] }
+    ];
+    map.mapTypes.set('styled', new google.maps.StyledMapType(styles));
+    map.setMapTypeId('styled')
+
+    var dotter = new Dotter(2);
+
+    for (var i = 0, crash; crash = incidents[i]; ++i) {
+      var latlng = crash.latlng;
+      var color = 'rgba(0,255,0,.5)';
+      var zindex = 1;
+      if (crash.injuries) {
+        color = 'rgba(255,255,0,.5)';
+        zindex = 2;
+      }
+      if (crash.fatalties) {
+        color = 'red';
+        zindex = 3;
+      }
+      new google.maps.Marker({
+        position: new google.maps.LatLng(latlng[1], latlng[0]),
+        icon: dotter.getDot(color),
+        zIndex: zindex,
+        flat: true,
+        map: map
+      });
+    }
+  }
+</script>
+</head>
+<body onload="initialize()">
+  <div id="map"></div>
+</body>
+</html>
