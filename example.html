@@ -30,7 +30,7 @@
     var dotter = new Dotter(2);
 
     for (var i = 0, crash; crash = incidents[i]; ++i) {
-      var latlng = crash.latlng;
+      var lnglat = crash.lnglat;
       var color = 'rgba(0,255,0,.4)';
       var zindex = 1;
       if (crash.injuries) {
@@ -42,7 +42,7 @@
         zindex = 3;
       }
       new google.maps.Marker({
-        position: new google.maps.LatLng(latlng[1], latlng[0]),
+        position: new google.maps.LatLng(lnglat[1], lnglat[0]),
         icon: dotter.getDot(color),
         zIndex: zindex,
         flat: true,
