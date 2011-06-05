@@ -22,7 +22,7 @@
     });
     var styles = [
       { elementType: 'labels', stylers: [ { visibility: 'off' } ] },
-      { stylers: [ { saturation: -99 }, { lightness: -30 } ] }
+      { stylers: [ { saturation: -99 }, { lightness: -40 } ] }
     ];
     map.mapTypes.set('styled', new google.maps.StyledMapType(styles));
     map.setMapTypeId('styled')
@@ -31,10 +31,10 @@
 
     for (var i = 0, crash; crash = incidents[i]; ++i) {
       var latlng = crash.latlng;
-      var color = 'rgba(0,255,0,.5)';
+      var color = 'rgba(0,255,0,.4)';
       var zindex = 1;
       if (crash.injuries) {
-        color = 'rgba(255,255,0,.5)';
+        color = 'rgba(255,255,0,.4)';
         zindex = 2;
       }
       if (crash.fatalties) {
@@ -46,6 +46,7 @@
         icon: dotter.getDot(color),
         zIndex: zindex,
         flat: true,
+        clickable: false,
         map: map
       });
     }
