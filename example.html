@@ -8,16 +8,27 @@
 <style type="text/css">
   html, body, #map {
     width: 100%; height: 100%; margin: 0; padding: 0;
+    font-family: sans-serif;
   }
+  #header, #legend {
+    position: absolute;
+    z-index: 1000;
+    background: rgba(255, 255, 255, .5);
+  }
+  #header { width: 100%; font-size: 24px; height: 40px; line-height: 40px; }
+  #header div { padding: 0 90px; }
+  #legend { top: 40px; right: 0; padding-bottom: 5px; border-bottom-left-radius: 15px; }
+  #legend img { vertical-align: middle; margin-right: 10px; }
+  #legend div { font-size: 13px; padding: 5px 10px; }
 </style>
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript" src="dotter.js"></script>
-<script type="text/javascript" src="crashes.js"></script>
+<script type="text/javascript" src="crimes.js"></script>
 <script type="text/javascript">
   function initialize() {
     var map = new google.maps.Map(document.getElementById('map'), {
-      center: new google.maps.LatLng(41.852973, -87.630099),
-      zoom: 11,
+      center: new google.maps.LatLng(37.77, -122.44),
+      zoom: 13,
       mapTypeControl: false
     });
     var styles = [
@@ -29,31 +40,52 @@
 
     var dotter = new Dotter(2);
 
-    for (var i = 0, crash; crash = incidents[i]; ++i) {
-      var lnglat = crash.lnglat;
-      var color = 'rgba(0,255,0,.4)';
-      var zindex = 1;
-      if (crash.injuries) {
-        color = 'rgba(255,255,0,.4)';
-        zindex = 2;
-      }
-      if (crash.fatalties) {
-        color = 'red';
-        zindex = 3;
-      }
+    // http://sanfrancisco.crimespotting.org/
+    var red = 'rgba(255, 0, 0, .3)';
+    var blue = 'rgba(60, 60, 255, .3)';
+    var green = 'rgba(60, 255, 60, .3)';
+
+    var colors = {
+      'AGGRAVATED ASSAULT': red,
+      'SIMPLE ASSAULT': red,
+      ROBBERY: red,
+
+      NARCOTICS: blue,
+      ALCOHOL: blue,
+      PROSTITUTION: blue,
+
+      THEFT: green,
+      'VEHICLE THEFT': green,
+      VANDALISM: green,
+      BURGLARY: green,
+      ARSON: green
+    }
+
+    for (var i = 0, crime; crime = incidents[i]; ++i) {
+      var lnglat = crime.lnglat;
       new google.maps.Marker({
         position: new google.maps.LatLng(lnglat[1], lnglat[0]),
-        icon: dotter.getDot(color),
-        zIndex: zindex,
+        icon: dotter.getDot(colors[crime.type]),
         flat: true,
         clickable: false,
         map: map
       });
     }
+
+    // Create legend
+    var legendDot = new Dotter(8);
+    var legend = document.getElementById('legend');
+    var legendHTML = [];
+    legendHTML.push('<div><img src="',legendDot.getDot('#f00'),'">Assault/Robbery</div>');
+    legendHTML.push('<div><img src="',legendDot.getDot('#00f'),'">Narcotics/Alcohol/Prostitution</div>');
+    legendHTML.push('<div><img src="',legendDot.getDot('#0f0'),'">Theft/Vandalism/Burglary/Arson</div>');
+    legend.innerHTML = legendHTML.join('');
   }
 </script>
 </head>
 <body onload="initialize()">
+  <div id="header"><div>Crimes in SF from 2011-04-25 to 2011-05-25</div></div>
+  <div id="legend"></div>
   <div id="map"></div>
 </body>
 </html>
