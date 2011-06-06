@@ -41,24 +41,24 @@
     var dotter = new Dotter(2);
 
     // http://sanfrancisco.crimespotting.org/
-    var red = 'rgba(255, 0, 0, .3)';
-    var blue = 'rgba(60, 60, 255, .3)';
-    var green = 'rgba(60, 255, 60, .3)';
+    var group1 = 'rgba(255, 0, 0, .3)';
+    var group2 = 'rgba(255, 255, 60, .3)';
+    var group3 = 'rgba(60, 255, 60, .3)';
 
     var colors = {
-      'AGGRAVATED ASSAULT': red,
-      'SIMPLE ASSAULT': red,
-      ROBBERY: red,
+      'AGGRAVATED ASSAULT': group1,
+      'SIMPLE ASSAULT': group1,
+      ROBBERY: group1,
 
-      NARCOTICS: blue,
-      ALCOHOL: blue,
-      PROSTITUTION: blue,
+      NARCOTICS: group2,
+      ALCOHOL: group2,
+      PROSTITUTION: group2,
 
-      THEFT: green,
-      'VEHICLE THEFT': green,
-      VANDALISM: green,
-      BURGLARY: green,
-      ARSON: green
+      THEFT: group3,
+      'VEHICLE THEFT': group3,
+      VANDALISM: group3,
+      BURGLARY: group3,
+      ARSON: group3
     }
 
     for (var i = 0, crime; crime = incidents[i]; ++i) {
@@ -77,7 +77,7 @@
     var legend = document.getElementById('legend');
     var legendHTML = [];
     legendHTML.push('<div><img src="',legendDot.getDot('#f00'),'">Assault/Robbery</div>');
-    legendHTML.push('<div><img src="',legendDot.getDot('#00f'),'">Narcotics/Alcohol/Prostitution</div>');
+    legendHTML.push('<div><img src="',legendDot.getDot('#ff0'),'">Narcotics/Alcohol/Prostitution</div>');
     legendHTML.push('<div><img src="',legendDot.getDot('#0f0'),'">Theft/Vandalism/Burglary/Arson</div>');
     legend.innerHTML = legendHTML.join('');
   }
